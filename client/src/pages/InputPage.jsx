@@ -14,7 +14,8 @@ const InputPage = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await axios.post('http://localhost:5000/api/nightmare/generate', formData);
+      const API = import.meta.env.VITE_API_URL;
+      const response = await axios.get(`${API}/api/nightmare/history`);
       navigate('/nightmare', { state: { dream: response.data } });
     } catch (error) {
       console.error('Submission failed', error);
