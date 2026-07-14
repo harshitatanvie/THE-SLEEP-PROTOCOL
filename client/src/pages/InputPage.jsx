@@ -15,7 +15,7 @@ const InputPage = () => {
     setLoading(true);
     try {
       const API = import.meta.env.VITE_API_URL;
-      const response = await axios.get(`${API}/api/nightmare/history`);
+      const response = await axios.post(`${API}/api/nightmare/generate`, formData);
       navigate('/nightmare', { state: { dream: response.data } });
     } catch (error) {
       console.error('Submission failed', error);
