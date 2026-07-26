@@ -1,5 +1,5 @@
 {
-  "buildCommand": "pnpm -C client run build",
+  "buildCommand": "cd client && npm install && npm run build",
   "outputDirectory": "client/dist",
   "rewrites": [
     {
