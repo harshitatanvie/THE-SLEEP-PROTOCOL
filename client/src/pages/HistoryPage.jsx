@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import GlitchText from '../components/GlitchText';
@@ -11,13 +10,13 @@ const HistoryPage = () => {
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        
-      const API = import.meta.env.VITE_API_URL;
-
-      const response = await axios.get(`${API}/api/nightmare/history`);
-        setDreams(response.data);
+        const response = await fetch('/api/nightmare/history');
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.json();
+        setDreams(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error('Failed to fetch history', error);
+        setDreams([]);
       }
     };
     fetchHistory();
