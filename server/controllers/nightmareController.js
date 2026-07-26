@@ -78,8 +78,8 @@ exports.getDreamHistory = async (req, res) => {
       }]);
     }
     const dreams = await Dream.find().sort({ createdAt: -1 });
-    res.json(dreams);
+    res.json(Array.isArray(dreams) ? dreams : []);
   } catch (error) {
-    res.status(500).json({ error: 'Error fetching history' });
+    res.status(500).json([]);
   }
 };
