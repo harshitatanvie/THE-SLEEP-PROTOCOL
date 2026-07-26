@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import axios from 'axios';
 import DistortedInput from '../components/DistortedInput';
 import GlitchText from '../components/GlitchText';
 
@@ -14,10 +13,20 @@ const InputPage = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const API = import.meta.env.VITE_API_URL;
-      const response = await axios.post(`${API}/api/nightmare/generate`, formData);
-      navigate('/nightmare', { state: { dream: response.data } });
+      const API = import.meta.env.VITE_API_URL || 'http://127.0.0.1:5000';
+      window.__debugSubmit = { API, formData };
+      const response = await fetch(`${API}/api/nightmare/generate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+      window.__debugResponse = { status: response.status, ok: response.ok };
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const data = await response.json();
+      window.__debugData = data;
+      navigate('/nightmare', { state: { dream: data } });
     } catch (error) {
+      window.__debugError = { message: error.message, stack: error.stack };
       console.error('Submission failed', error);
       alert('The void refused your input. Try again.');
     } finally {

@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
 
 // Database Connection & Server Start
 const startServer = () => {
-  app.listen(PORT, () => {
+  app.listen(PORT, '0.0.0.0', () => {
     console.log(`[!] Sleep Protocol active on port ${PORT}`);
     if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY.includes('your-openai-key')) {
       console.log('--- RUNNING IN MOCK MODE (No OpenAI Key) ---');
